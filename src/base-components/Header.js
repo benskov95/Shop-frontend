@@ -13,6 +13,7 @@ import Example from "../components/Example";
 import Admin from "./Admin";
 import Register from "./Register";
 import NoMatch from "./NoMatch"
+import PrivateRoute from "./PrivateRoute";
 
 export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
 
@@ -68,15 +69,13 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
 
       <Switch>
       {/* for deployment */}
-        <Route path="/ca3-startcode">
+        <Route path="/ben-ca3">
           <Redirect to="/" />
         </Route>
         <Route exact path="/">
           <Home />
         </Route>
-        <Route path="/example">
-          <Example />
-        </Route>
+        <PrivateRoute path="/example" isLoggedIn={isLoggedIn} component={Example} />
         <Route path="/admin">
           <Admin />
         </Route>
