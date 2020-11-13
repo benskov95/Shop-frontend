@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DIRECTORY="ca3-startcode" # Directory name
+DIRECTORY="ben-ca3" # Directory name
 DROPLET_URL="bencat.dk" # Your own URL
 
 echo "##############################"
