@@ -76,9 +76,7 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
           <Home />
         </Route>
         <PrivateRoute path="/example" isLoggedIn={isLoggedIn} component={Example} />
-        <Route path="/admin">
-          <Admin />
-        </Route>
+        <PrivateRoute path="/admin" isLoggedIn={isLoggedIn} component={Admin} />
         <Route path="/login">
           <Login
             setLoginStatus={setLoginStatus}
