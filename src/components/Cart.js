@@ -36,12 +36,19 @@ export default function Cart({cart, setCart, removeFromCart, increaseQuantity, c
             order.orderlines.push(ol);
         })
         setOrder({...order});
-        setCart([]);
-        setBalance(balance - totalDKK);
 
         orderFacade.addOrder(order)
-        .then(result => {setMsg(result)})
-        .catch(error => setMsg(error.fullError))
+        .then(result => {
+            setMsg(result)
+            setCart([]);
+            setBalance(balance - totalDKK);
+        })
+        .catch(promise => {
+            promise.fullError.then(error => {
+                setMsg(error.message)
+            })
+            
+        })
     }
 
     return (
@@ -91,6 +98,7 @@ export default function Cart({cart, setCart, removeFromCart, increaseQuantity, c
             })}
             </tbody>
             </table>
+            <p style={{color: "red", fontSize: "20px"}}>{msg.length > 1 ? msg : ""}</p>
             <h3><u>Total</u></h3>
             <p style={{fontSize: "30px", fontWeight: "bold"}}>
                 {`$${totalUSD} --> ${totalDKK} DKK`}
