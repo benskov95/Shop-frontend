@@ -22,8 +22,9 @@ export default function Home() {
   return (
     <div>
       <h1>Home</h1>
-      <p>This is Benjamin's webshop client</p>
-      <br />
+      <p>This is Benjamin's webshop client. <br />
+      Feel free to browse the products in the Products section.
+      </p><br />
       <p style={{ fontWeight: "bold" }}>
         Select which API to use <br />
         Currently using: {currentURL}
@@ -35,8 +36,6 @@ export default function Home() {
       </select>
       <br /><br />
       <h3>Log in or register to start shopping!</h3>
-      <p>
-      </p>
     </div>
   );
 }

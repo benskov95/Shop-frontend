@@ -55,6 +55,7 @@ export const Login = ({ isLoggedIn, loginMsg, setLoginStatus }) => {
           <br />
           <input type="submit" value="Log in" className="btn btn-secondary"/>
           <br />
+          <br />
           <p style={{ color: "red" }}>{error}</p>
         </form>
       </div>
