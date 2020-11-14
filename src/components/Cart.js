@@ -1,19 +1,19 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Products.css";
-import orderFacade from "../facades/orderFacade";
 import { useEffect, useState } from "react";
+import orderFacade from "../facades/orderFacade";
 
-export default function Cart({cart, removeFromCart, increaseQuantity}) {
+export default function Cart({cart, setCart, removeFromCart, increaseQuantity, currentRate}) {
     const [totalUSD, setTotalUSD] = useState(0);
     const [totalDKK, setTotalDKK] = useState(0);
+    const [order, setOrder] = useState({username: localStorage.getItem("user")});
+    const [msg, setMsg] = useState("");
 
     useEffect(() =>{
         let calculatedPrice = 0;
         cart.forEach(p => calculatedPrice += (p.price * p.quantity));
         setTotalUSD(calculatedPrice);
-
-        orderFacade.externalConvertPrice(calculatedPrice)
-        .then(converted => setTotalDKK(converted.rates.DKK));
+        setTotalDKK((calculatedPrice * currentRate).toFixed(2))
     }, [cart]);
 
     const removeOrAdd = (e) => {
@@ -24,6 +24,23 @@ export default function Cart({cart, removeFromCart, increaseQuantity}) {
         } else {
         removeFromCart(id);
         }
+    }
+
+    const placeOrder = (e) => {
+        e.preventDefault();
+        let cartCopy = cart.map(ol => ({...ol}));
+        order.orderlines = [];
+        cartCopy.forEach(ol => {
+            delete ol.id;
+            ol.price *= currentRate;
+            order.orderlines.push(ol);
+        })
+        setOrder({...order});
+        setCart([]);
+
+        orderFacade.addOrder(order)
+        .then(result => {setMsg(result)})
+        .catch(error => setMsg(error.fullError))
     }
 
     return (
@@ -77,10 +94,15 @@ export default function Cart({cart, removeFromCart, increaseQuantity}) {
             <p style={{fontSize: "30px", fontWeight: "bold"}}>
                 {`$${totalUSD} --> ${totalDKK} DKK`}
             </p>
-            <button className="btn btn-success">Order</button>
+            <button onClick={placeOrder} className="btn btn-success">Order</button>
             </div>
             ) : 
             <div className="container" style={{backgroundColor: "white"}}>
+                <h4 style={{color: "green"}}>
+                    {typeof msg.id !== "undefined" ? `Order (ID: ${msg.id}) successfully made. 
+                    Thank you for your purchase, ${msg.username}.` : ""}
+                </h4>
+                <br />
                 <h2>
                     Nothing here yet... add something to your cart<br />
                     on the Products page.

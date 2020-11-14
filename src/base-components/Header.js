@@ -15,16 +15,23 @@ import Register from "./Register";
 import NoMatch from "./NoMatch"
 import PrivateRoute from "./PrivateRoute";
 import Products from "../components/Products";
-import Cart from "../components/Cart"
+import Cart from "../components/Cart";
+import orderFacade from "../facades/orderFacade";
+import Orders from "../components/Orders";
 
 export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
   const [cart, setCart] = useState([]);
+  const [currentRate, setCurrentRate] = useState(0);
   let user = isLoggedIn ? localStorage.getItem("user") : "";
   let roles = isLoggedIn ? `Roles: ${localStorage.getItem("roles")}` : "";
   let balance = isLoggedIn ? parseFloat(localStorage.getItem("balance")) : "";
 
   useEffect(() => {
     setCart([]);
+    if (isLoggedIn) {
+    orderFacade.externalConvertPrice()
+    .then(current => setCurrentRate(current.rates.DKK));
+    }
   }, [isLoggedIn])
 
   const addToCart = (product) => {
@@ -102,6 +109,11 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
           </React.Fragment>
         )}
         <li>
+          <NavLink activeClassName="active" to="/orders">
+            {roles.includes("admin") ? "Orders" : "My Orders"}
+          </NavLink>
+        </li>
+        <li>
           <NavLink activeClassName="selected" to="/login">
             {loginMsg}
           </NavLink>
@@ -133,10 +145,13 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
         </Route>
         <PrivateRoute path="/example" isLoggedIn={isLoggedIn} component={Example} />
         <PrivateRoute path="/admin" isLoggedIn={isLoggedIn} component={Admin} />
+        <PrivateRoute path="/orders" isLoggedIn={isLoggedIn} component={Orders} /> 
         <PrivateRoute path="/cart" isLoggedIn={isLoggedIn} component={Cart} 
         cart={[...cart]}
+        setCart={setCart}
         removeFromCart={removeFromCart}
         increaseQuantity={increaseQuantity}
+        currentRate={currentRate}
         />
         <Route path="/login">
           <Login
