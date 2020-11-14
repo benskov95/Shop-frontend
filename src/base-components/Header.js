@@ -19,6 +19,9 @@ import Cart from "../components/Cart"
 
 export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
   const [cart, setCart] = useState([]);
+  let user = isLoggedIn ? localStorage.getItem("user") : "";
+  let roles = isLoggedIn ? `Roles: ${localStorage.getItem("roles")}` : "";
+  let balance = isLoggedIn ? parseFloat(localStorage.getItem("balance")) : "";
 
   useEffect(() => {
     setCart([]);
@@ -61,9 +64,6 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
     })
   }
 
-  let user = isLoggedIn ? `Logged in as: ${localStorage.getItem("user")}` : "";
-  let roles = isLoggedIn ? `Roles: ${localStorage.getItem("roles")}` : "";
-
   return (
     <div>
       <ul className="header">
@@ -80,9 +80,10 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
         {isLoggedIn && (
           <React.Fragment>
             <li style={{ float: "right", color: "white", marginRight: "20px" }}>
-            {user}
+            {user + ", " + balance.toFixed(2) + " DKK"}
             <br />
             {roles}
+            <br />
             </li>
             <li style={{float: "right", marginRight: "20px"}}>
               <NavLink activeClassName="active" to="/cart">

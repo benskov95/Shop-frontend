@@ -16,10 +16,11 @@ function apiFacade() {
     return localStorage.getItem("jwtToken");
   };
 
-  const setUserAndRoles = (token) => {
+  const setUser = (token) => {
     let userFromToken = JSON.parse(atob(token.split(".")[1]));
     localStorage.setItem("user", userFromToken.sub);
     localStorage.setItem("roles", userFromToken.roles);
+    localStorage.setItem("balance", userFromToken.balance);
   };
 
   const loggedIn = () => {
@@ -31,6 +32,7 @@ function apiFacade() {
     localStorage.removeItem("jwtToken");
     localStorage.removeItem("user");
     localStorage.removeItem("roles");
+    localStorage.removeItem("balance");
   };
 
   const login = (user) => {
@@ -41,7 +43,7 @@ function apiFacade() {
     return fetch(URL + "/api/login", options)
       .then(handleHttpErrors)
       .then((res) => {
-        setUserAndRoles(res.token);
+        setUser(res.token);
         setToken(res.token);
       });
   };
