@@ -9,7 +9,6 @@ import {
 } from "react-router-dom";
 import { Login } from "./Login";
 import Home from "./Home";
-import Example from "../components/Example";
 import Admin from "./Admin";
 import Register from "./Register";
 import NoMatch from "./NoMatch"
@@ -150,7 +149,6 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
               addToCart={addToCart}
           />
         </Route>
-        <PrivateRoute path="/example" isLoggedIn={isLoggedIn} component={Example} />
         <PrivateRoute path="/admin" isLoggedIn={isLoggedIn} component={Admin} />
         <PrivateRoute path="/refunds" isLoggedIn={isLoggedIn} component={Refunds} />
         <PrivateRoute path="/orders" isLoggedIn={isLoggedIn} component={Orders} 
