@@ -58,6 +58,11 @@ function apiFacade() {
       .then(handleHttpErrors)
   }
 
+  const addBalance = (username) => {
+    return fetch(URL + "/api/info/startcredit/" + username, makeOptions("POST", true))
+    .then(handleHttpErrors);
+  }
+
   const makeOptions = (method, addToken, body) => {
     var opts = {
       method: method,
@@ -81,7 +86,8 @@ function apiFacade() {
     loggedIn,
     login,
     logout,
-    register
+    register,
+    addBalance
   };
 }
 const facade = apiFacade();

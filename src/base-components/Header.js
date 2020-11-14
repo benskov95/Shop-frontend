@@ -18,16 +18,18 @@ import Products from "../components/Products";
 import Cart from "../components/Cart";
 import orderFacade from "../facades/orderFacade";
 import Orders from "../components/Orders";
+import Refunds from "../components/Refunds";
 
 export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
   const [cart, setCart] = useState([]);
   const [currentRate, setCurrentRate] = useState(0);
   let user = isLoggedIn ? localStorage.getItem("user") : "";
   let roles = isLoggedIn ? `Roles: ${localStorage.getItem("roles")}` : "";
-  let balance = isLoggedIn ? parseFloat(localStorage.getItem("balance")) : "";
+  const [balance, setBalance] = useState(parseFloat(localStorage.getItem("balance")));
 
   useEffect(() => {
     setCart([]);
+    setBalance(parseFloat(localStorage.getItem("balance")));
     if (isLoggedIn) {
     orderFacade.externalConvertPrice()
     .then(current => setCurrentRate(current.rates.DKK));
@@ -86,6 +88,11 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
         </li>
         {isLoggedIn && (
           <React.Fragment>
+            <li>
+              <NavLink activeClassName="active" to="/orders">
+                {roles.includes("admin") ? "Orders" : "My Orders"}
+              </NavLink>
+            </li>
             <li style={{ float: "right", color: "white", marginRight: "20px" }}>
             {user + ", " + balance.toFixed(2) + " DKK"}
             <br />
@@ -103,16 +110,16 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
           <React.Fragment>
             <li>
               <NavLink activeClassName="active" to="/admin">
-                Admin
+                Users
+              </NavLink>
+            </li>
+            <li>
+              <NavLink activeClassName="active" to="/refunds">
+                Refunds
               </NavLink>
             </li>
           </React.Fragment>
         )}
-        <li>
-          <NavLink activeClassName="active" to="/orders">
-            {roles.includes("admin") ? "Orders" : "My Orders"}
-          </NavLink>
-        </li>
         <li>
           <NavLink activeClassName="selected" to="/login">
             {loginMsg}
@@ -135,7 +142,7 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
           <Redirect to="/" />
         </Route>
         <Route exact path="/">
-          <Home />
+          <Home isLoggedIn={isLoggedIn} setBalance={setBalance}/>
         </Route>
         <Route exact path="/products">
           <Products 
@@ -145,13 +152,19 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
         </Route>
         <PrivateRoute path="/example" isLoggedIn={isLoggedIn} component={Example} />
         <PrivateRoute path="/admin" isLoggedIn={isLoggedIn} component={Admin} />
-        <PrivateRoute path="/orders" isLoggedIn={isLoggedIn} component={Orders} /> 
+        <PrivateRoute path="/refunds" isLoggedIn={isLoggedIn} component={Refunds} />
+        <PrivateRoute path="/orders" isLoggedIn={isLoggedIn} component={Orders} 
+        roles={roles}
+        user={user}
+        /> 
         <PrivateRoute path="/cart" isLoggedIn={isLoggedIn} component={Cart} 
         cart={[...cart]}
         setCart={setCart}
         removeFromCart={removeFromCart}
         increaseQuantity={increaseQuantity}
         currentRate={currentRate}
+        setBalance={setBalance}
+        balance={balance}
         />
         <Route path="/login">
           <Login

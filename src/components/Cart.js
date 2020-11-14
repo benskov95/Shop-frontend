@@ -3,7 +3,7 @@ import "../styles/Products.css";
 import { useEffect, useState } from "react";
 import orderFacade from "../facades/orderFacade";
 
-export default function Cart({cart, setCart, removeFromCart, increaseQuantity, currentRate}) {
+export default function Cart({cart, setCart, removeFromCart, increaseQuantity, currentRate, setBalance, balance}) {
     const [totalUSD, setTotalUSD] = useState(0);
     const [totalDKK, setTotalDKK] = useState(0);
     const [order, setOrder] = useState({username: localStorage.getItem("user")});
@@ -37,6 +37,7 @@ export default function Cart({cart, setCart, removeFromCart, increaseQuantity, c
         })
         setOrder({...order});
         setCart([]);
+        setBalance(balance - totalDKK);
 
         orderFacade.addOrder(order)
         .then(result => {setMsg(result)})

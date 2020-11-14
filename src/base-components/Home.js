@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { LOCAL_URL, REMOTE_URL } from "../utils/settings";
+import apiFacade from "../base-facades/apiFacade";
 
 export let URL = "";
 
-export default function Home() {
+export default function Home({isLoggedIn, setBalance}) {
   const [currentURL, setCurrentURL] = useState(
     URL === LOCAL_URL ? "Local API" : URL === REMOTE_URL ? "Remote API" : "none"
   );
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {}, [currentURL]);
 
@@ -19,6 +21,25 @@ export default function Home() {
     }
   };
 
+  const addToBalance = (e) => {
+    e.preventDefault();
+    apiFacade.addBalance(localStorage.getItem("user"))
+    .then(res => {
+      setMsg(res.msg)
+      setBalance(10000)
+    })
+    }
+
+  if (isLoggedIn) {
+    return (
+      <div>
+        <h1>Home</h1><br />
+        <h2>Click the button to start shopping</h2><br />
+        <h4 style={{color: "green"}}>{msg}</h4><br />
+        <button className="btn btn-success" onClick={addToBalance}>Give me money</button>
+      </div>
+    )
+  } else {
   return (
     <div>
       <h1>Home</h1>
@@ -39,3 +60,5 @@ export default function Home() {
     </div>
   );
 }
+}
+
