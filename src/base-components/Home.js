@@ -12,7 +12,7 @@ export default function Home({isLoggedIn, setBalance}) {
     apiFacade.addBalance(localStorage.getItem("user"))
     .then(res => {
       setMsg(res.msg)
-      setBalance(10000)
+      setBalance(res.newBalance)
     })
     }
 

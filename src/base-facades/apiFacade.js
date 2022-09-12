@@ -46,7 +46,6 @@ function apiFacade() {
       });
   };
 
-
   const register = (user) => {
     const options = makeOptions("POST", false, {
       username: user.username,

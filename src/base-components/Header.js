@@ -76,19 +76,19 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
     <div>
       <ul className="header">
         <li>
-          <NavLink exact activeClassName="selected" to="/">
+          <NavLink exact activeClassName="selected" to="/shop">
             Home
           </NavLink>
         </li>
         <li>
-          <NavLink activeClassName="selected" to="/products">
+          <NavLink activeClassName="selected" to="/shop/products">
             Products
           </NavLink>
         </li>
         {isLoggedIn && (
           <React.Fragment>
             <li>
-              <NavLink activeClassName="active" to="/orders">
+              <NavLink activeClassName="active" to="/shop/orders">
                 {roles.includes("admin") ? "Orders" : "My Orders"}
               </NavLink>
             </li>
@@ -99,7 +99,7 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
             <br />
             </li>
             <li style={{float: "right", marginRight: "20px"}}>
-              <NavLink activeClassName="active" to="/cart">
+              <NavLink activeClassName="active" to="/shop/cart">
                 Cart ({cart.length})
               </NavLink>
             </li>
@@ -108,26 +108,26 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
         {roles.includes("admin") && (
           <React.Fragment>
             <li>
-              <NavLink activeClassName="active" to="/admin">
+              <NavLink activeClassName="active" to="/shop/admin">
                 Users
               </NavLink>
             </li>
             <li>
-              <NavLink activeClassName="active" to="/refunds">
+              <NavLink activeClassName="active" to="/shop/refunds">
                 Refunds
               </NavLink>
             </li>
           </React.Fragment>
         )}
         <li>
-          <NavLink activeClassName="selected" to="/login">
+          <NavLink activeClassName="selected" to="/shop/login">
             {loginMsg}
           </NavLink>
         </li>
         {!isLoggedIn && (
           <React.Fragment>
             <li>
-              <NavLink activeClassName="active" to="/register">
+              <NavLink activeClassName="active" to="/shop/register">
                 Register
               </NavLink>
             </li>
@@ -140,10 +140,7 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
           <Home isLoggedIn={isLoggedIn} setBalance={setBalance}/>
         </Route>
         <Route exact path="/shop/products">
-          <Products 
-              isLoggedIn={isLoggedIn}
-              addToCart={addToCart}
-          />
+          <Products isLoggedIn={isLoggedIn} addToCart={addToCart} />
         </Route>
         <PrivateRoute path="/shop/admin" isLoggedIn={isLoggedIn} component={Admin} />
         <PrivateRoute path="/shop/refunds" isLoggedIn={isLoggedIn} component={Refunds} />

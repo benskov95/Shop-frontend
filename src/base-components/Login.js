@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import apiFacade from "../base-facades/apiFacade";
-import { URL } from "./Home";
 
 export const Login = ({ isLoggedIn, loginMsg, setLoginStatus }) => {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -13,21 +12,17 @@ export const Login = ({ isLoggedIn, loginMsg, setLoginStatus }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (URL === "") {
-      setError("Remember to select an API on the Home page.");
-    } else {
-      apiFacade
-      .login(user)
-      .then((res) => setLoginStatus(!isLoggedIn))
-      .catch((promise) => {
-        if (promise.fullError) {
-          printError(promise, setError);
-        } else {
-          setError("No response from API. Make sure it is running.");
-        }
-      });
-    }
-  };
+    apiFacade
+    .login(user)
+    .then((res) => setLoginStatus(!isLoggedIn))
+    .catch((promise) => {
+      if (promise.fullError) {
+        printError(promise, setError);
+      } else {
+        setError("No response from API. Make sure it is running.");
+      }
+    });
+  }
 
   const logout = () => {
     setLoginStatus(false);

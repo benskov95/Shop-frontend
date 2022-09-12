@@ -9,7 +9,7 @@ export default function App() {
 
   const setLoginStatus = (status) => {
     setIsLoggedIn(status);
-    history.push("/");
+    history.push("/shop");
   };
 
   return (
