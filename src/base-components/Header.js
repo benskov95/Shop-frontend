@@ -136,26 +136,22 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
       </ul>
 
       <Switch>
-      {/* for deployment */}
-        <Route path="/ben-ca3">
-          <Redirect to="/" />
-        </Route>
-        <Route exact path="/">
+        <Route exact path="/shop">
           <Home isLoggedIn={isLoggedIn} setBalance={setBalance}/>
         </Route>
-        <Route exact path="/products">
+        <Route exact path="/shop/products">
           <Products 
               isLoggedIn={isLoggedIn}
               addToCart={addToCart}
           />
         </Route>
-        <PrivateRoute path="/admin" isLoggedIn={isLoggedIn} component={Admin} />
-        <PrivateRoute path="/refunds" isLoggedIn={isLoggedIn} component={Refunds} />
-        <PrivateRoute path="/orders" isLoggedIn={isLoggedIn} component={Orders} 
+        <PrivateRoute path="/shop/admin" isLoggedIn={isLoggedIn} component={Admin} />
+        <PrivateRoute path="/shop/refunds" isLoggedIn={isLoggedIn} component={Refunds} />
+        <PrivateRoute path="/shop/orders" isLoggedIn={isLoggedIn} component={Orders} 
         roles={roles}
         user={user}
         /> 
-        <PrivateRoute path="/cart" isLoggedIn={isLoggedIn} component={Cart} 
+        <PrivateRoute path="/shop/cart" isLoggedIn={isLoggedIn} component={Cart} 
         cart={[...cart]}
         setCart={setCart}
         removeFromCart={removeFromCart}
@@ -164,14 +160,14 @@ export default function Header({ isLoggedIn, setLoginStatus, loginMsg }) {
         setBalance={setBalance}
         balance={balance}
         />
-        <Route path="/login">
+        <Route path="/shop/login">
           <Login
             setLoginStatus={setLoginStatus}
             isLoggedIn={isLoggedIn}
             loginMsg={loginMsg}
           />
         </Route>
-        <Route path="/register">
+        <Route path="/shop/register">
           <Register />
         </Route>
         <Route>

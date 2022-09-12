@@ -1,5 +1,3 @@
-import { URL } from "../base-components/Home";
-
 export function handleHttpErrors(res) {
   if (!res.ok) {
     return Promise.reject({ status: res.status, fullError: res.json() });
@@ -40,7 +38,7 @@ function apiFacade() {
       username: user.username,
       password: user.password,
     });
-    return fetch(URL + "/api/login", options)
+    return fetch(process.env.REACT_APP_API_URL + "/api/login", options)
       .then(handleHttpErrors)
       .then((res) => {
         setUser(res.token);
@@ -54,12 +52,12 @@ function apiFacade() {
       username: user.username,
       password: user.password,
     });
-    return fetch(URL + "/api/users", options)
+    return fetch(process.env.REACT_APP_API_URL + "/api/users", options)
       .then(handleHttpErrors)
   }
 
   const addBalance = (username) => {
-    return fetch(URL + "/api/info/startcredit/" + username, makeOptions("POST", true))
+    return fetch(process.env.REACT_APP_API_URL + "/api/info/startcredit/" + username, makeOptions("POST", true))
     .then(handleHttpErrors);
   }
 
